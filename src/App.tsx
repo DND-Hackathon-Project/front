@@ -1,14 +1,22 @@
 import "./App.css";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Detail from "./pages/Detail";
 
 function App() {
   return (
-    <>
-      <Avatar>
-        <AvatarImage src="https://github.com/shadcn.png" />
-        <AvatarFallback>CN</AvatarFallback>
-      </Avatar>
-    </>
+    <BrowserRouter>
+      <Routes>
+        {/* 기본 홈 경로 */}
+        <Route path="/" element={<Home />} />
+
+        {/* 상세 페이지 */}
+        <Route path="/detail" element={<Detail />} />
+
+        {/* 404 페이지
+        <Route path="*" element={<NotFound />} /> */}
+      </Routes>
+    </BrowserRouter>
   );
 }
 
