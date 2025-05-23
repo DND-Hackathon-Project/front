@@ -1,9 +1,13 @@
 import "./App.css";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar";
 
 function App() {
   return (
     <>
-      <div>1</div>
+      <Avatar>
+        <AvatarImage src="https://github.com/shadcn.png" />
+        <AvatarFallback>CN</AvatarFallback>
+      </Avatar>
     </>
   );
 }
