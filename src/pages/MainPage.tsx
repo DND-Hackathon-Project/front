@@ -1,17 +1,47 @@
 import MainPageCarousel from "@/components/mainPageCarousel";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+} from "@radix-ui/react-dropdown-menu";
 
 const posterArr1 = Array(6).fill(1);
 
 export default function MainPage() {
   return (
-    <div className="flex flex-col max-w-md pt-12 overflow-visible">
-      <div>버튼 자리지롱</div>
+    <div className="flex flex-col gap-4 max-w-md pt-12 overflow-visible">
+      <div className="pl-3">
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <button className="w-20 h-8 border-2 border-black rounded-[16px]">
+              전국
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>서울</DropdownMenuItem>
+            <DropdownMenuItem>경기</DropdownMenuItem>
+            <DropdownMenuItem>인천</DropdownMenuItem>
+            <DropdownMenuItem>충남</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
       <div className="flex flex-col pl-3 gap-8">
         <div className="flex items-center pr-3">
-          <img
-            className="w-full h-full rounded-[20px] object-contain"
-            src="https://picsum.photos/200/200"
-          />
+          <div
+            className="relative w-full h-full rounded-[20px] overflow-hidden
+          "
+          >
+            <div className="absolute w-full p-4">
+              <div className="px-4 py-2 rounded-[20px] text-white bg-gray-800/40">
+                가장 많은 관심을 받은 축제예요!
+              </div>
+            </div>
+            <img
+              className="w-full h-full object-contain"
+              src="https://picsum.photos/200/200"
+            />
+          </div>
         </div>
         <div className="flex flex-col gap-6">
           <div>
