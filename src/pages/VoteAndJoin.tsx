@@ -1,28 +1,56 @@
+import { useState, useEffect } from "react";
 import FlexBox from "@/components/FlexBox";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar";
+import FestivalImageSwiper from "@/components/FestivalImageSwiper";
 import Arrow from "@/assets/ArrowLeft.svg?react";
 import Confetti from "@/assets/Confetti.svg?react";
+import WarningCircle from "@/assets/WarningCircle.svg?react";
 import ThumbsUp from "@/assets/ThumbsUp.svg?react";
 import ExpandableText from "@/components/ExpandableText";
+import Modal from "@/components/Modal";
 
-interface DetailProps {
-  image: string;
-}
+const thumbnails = [
+  "https://cdn.eachj.co.kr/news/photo/202205/6138_10647_2355.png",
+  "https://kfescdn.visitkorea.or.kr/kfes/upload/contents/db/e5bb25a8-034d-4bf3-bf87-e9973ee57940_3.jpg",
+  "https://www.visitbusan.net/upload_data/board_data/BBS_0000009/168713836274136.png",
+  "https://cdn.safetimes.co.kr/news/photo/202006/82465_59958_2426.jpg",
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS42DZZIEbNypohvywxqrZ4gdO85qMnto2Wpg&s",
+];
 
-const Detail = () => {
+const VoteAndJoin = () => {
+  const [mainImage, setMainImage] = useState(thumbnails[0]);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const fetchSomething = async () => {
+    const res = await fetch(
+      `https://fb2f-1-215-227-114.ngrok-free.app/members`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "69420",
+        },
+      }
+    );
+    const data = await res.json();
+    console.log(data);
+  };
+
+  useEffect(() => {
+    fetchSomething();
+  }, []);
+
   return (
     <div className="relative max-w-md mx-auto border border-1 h-screen overflow-hidden">
       {/* 배경 이미지 레이어 */}
       <div
-        className="absolute inset-0 bg-cover bg-center saturate-50 brightness-75"
+        className="absolute inset-0 bg-cover bg-center blur-sm saturate-50 brightness-75"
         style={{
-          backgroundImage: `url(https://cdn.eachj.co.kr/news/photo/202205/6138_10647_2355.png)`,
+          backgroundImage: `url(${mainImage})`,
           backgroundSize: "cover",
           zIndex: 0,
         }}
       />
 
-      {/* 내용 레이어 */}
       <div className="relative z-10 text-white h-full flex flex-col">
         <div className="px-6 pt-4">
           <Arrow className="w-8 h-8" />
@@ -47,6 +75,16 @@ const Detail = () => {
           </FlexBox>
 
           <FlexBox direction="col" className="pb-12 px-4 items-start">
+            <FestivalImageSwiper
+              thumbnails={thumbnails}
+              mainImage={mainImage}
+              setMainImage={setMainImage}
+            />
+
+            <FlexBox className="w-1/2 px-4 py-2 rounded-xl bg-red-500/50 text-white gap-4 text-base mb-4">
+              <WarningCircle />
+              <span>5월 28일에 마감해요!</span>
+            </FlexBox>
             <FlexBox direction="col" className="text-white gap-4 items-start">
               <h2 className="font-semibold text-xl">지역 축제명</h2>
               <ExpandableText
@@ -56,15 +94,22 @@ const Detail = () => {
               />
             </FlexBox>
             <FlexBox className="w-full justify-around mt-8 gap-4">
+              <button
+                className="flex-1 bg-white border border-2 border-blue-500 px-5 py-3 text-blue-500 rounded-lg cursor-pointer"
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                나도 참가할래요
+              </button>
               <button className="flex-1 bg-blue-500 px-5 py-3 rounded-lg cursor-pointer">
-                투표율 확인하기
+                이 작품에 투표할래요
               </button>
             </FlexBox>
           </FlexBox>
         </main>
       </div>
+      {<Modal isOpen={isOpen} onClose={() => setIsOpen(!isOpen)} />}
     </div>
   );
 };
 
-export default Detail;
+export default VoteAndJoin;
