@@ -1,7 +1,9 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
+import VoteAndJoin from "./pages/VoteAndJoin";
 import Detail from "./pages/Detail";
+import VoteResult from "./pages/VoteResult";
 
 function App() {
   return (
@@ -11,7 +13,9 @@ function App() {
         <Route path="/" element={<Home />} />
 
         {/* 상세 페이지 */}
-        <Route path="/detail" element={<Detail />} />
+        <Route path="/vote" element={<VoteAndJoin />} />
+        <Route path="/detail:id" element={<Detail />} />
+        <Route path="/voteResult" element={<VoteResult />} />
 
         {/* 404 페이지
         <Route path="*" element={<NotFound />} /> */}
