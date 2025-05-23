@@ -132,10 +132,12 @@ export default function MainPage() {
                 </div>
               </div>
               {popularPoster ? (
-                <img
-                  className="w-full h-full object-contain"
-                  src={`${IMG_PREFIX}/${popularPoster.posterImageUrl}`}
-                />
+                <Link to={`/details/${popularPoster.festivalId}`}>
+                  <img
+                    className="w-full h-full object-contain"
+                    src={`${IMG_PREFIX}/${popularPoster.posterImageUrl}`}
+                  />
+                </Link>
               ) : (
                 <div className="w-full h-full object-contain" />
               )}
