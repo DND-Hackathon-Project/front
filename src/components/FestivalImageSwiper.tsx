@@ -37,7 +37,7 @@ export default function FestivalImageSwiper({
             onClick={() => onThumbnailClick(src)}
             className={`flex-none w-[270px] h-[360px] rounded cursor-pointer transition-opacity duration-300 border-2 box-border ${
               src === mainImage
-                ? "opacity-100 border-blue-600"
+                ? "opacity-100 border-white"
                 : "opacity-60 border-transparent"
             }`}
           />
