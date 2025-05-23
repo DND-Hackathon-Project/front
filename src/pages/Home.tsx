@@ -1,5 +1,5 @@
 import MainPageCarousel from "@/components/mainPageCarousel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Crown from "@/assets/Crown.svg?react";
 import CaretDown from "@/assets/CaretDown.svg?react";
 import {
@@ -10,31 +10,78 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/drawer";
+import { customFetch } from "@/utils/customFetch";
 
-const posterArr1 = Array(6).fill(1);
+const IMG_PREFIX = "https://fb2f-1-215-227-114.ngrok-free.app/images";
 
 const regions = [
-  ["서울", "서울"],
-  ["부산", "부산"],
-  ["대구", "대구"],
-  ["인천", "인천"],
-  ["광주", "광주"],
-  ["대전", "대전"],
-  ["울산", "울산"],
-  ["세종", "세종"],
-  ["경기", "경기"],
-  ["강원", "강원"],
-  ["충북", "충북"],
-  ["충남", "충남"],
-  ["전북", "전북"],
-  ["전남", "전남"],
-  ["경북", "경북"],
-  ["경남", "경남"],
-  ["제주", "제주"],
+  ["서울", "서울특별시"],
+  // ["부산", "부산"],
+  // ["대구", "대구"],
+  ["인천", "인천광역시"],
+  // ["광주", "광주"],
+  // ["대전", "대전"],
+  // ["울산", "울산"],
+  // ["세종", "세종"],
+  // ["경기", "경기"],
+  ["강원", "강원특별자치도"],
+  // ["충북", "충북"],
+  ["충남", "충청남도"],
+  // ["전북", "전북"],
+  // ["전남", "전남"],
+  // ["경북", "경북"],
+  ["경남", "경상남도"],
+  // ["제주", "제주"],
 ];
+
+interface festivalInfo {
+  festivalId: number;
+  festivalName: string;
+  imageUrl: string;
+  memberId: number;
+  memberNickname: string;
+  posterId: number;
+  voteCount: number;
+}
+
+interface popularPosterInfo {
+  festivalId: number;
+  posterImageUrl: string;
+}
 
 export default function MainPage() {
   const [filterCity, setFilterCity] = useState<null | string>(null);
+  const [festivalList, setFestivalList] = useState<festivalInfo[] | null>(null);
+  const [popularPoster, setPopularPoster] = useState<popularPosterInfo | null>(
+    null
+  );
+  const filterSelected = filterCity !== null;
+  useEffect(() => {
+    async function getFestList() {
+      const data = await customFetch("/posters");
+      setFestivalList(data);
+    }
+    getFestList();
+  }, []);
+  useEffect(() => {
+    async function getPopular() {
+      const data = await customFetch("/posters/hot");
+      setPopularPoster(data);
+    }
+    getPopular();
+  }, []);
+
+  function changeFilter(index: number) {
+    setFilterCity(regions[index][0]);
+    async function getFilteredFestList() {
+      const data = await customFetch(
+        `/posters?region=${regions[index][1]}&isSelected=true`
+      );
+      setFestivalList(data);
+    }
+    getFilteredFestList();
+  }
+
   return (
     <Drawer>
       <div className="flex flex-col gap-4 max-w-md pt-12 overflow-visible">
@@ -54,11 +101,11 @@ export default function MainPage() {
                 </DrawerHeader>
                 <DrawerClose>
                   <ul className="flex flex-col gap-1 pl-[34px] w-[100px] h-[320px] overflow-y-scroll">
-                    {regions.map(([cityName, key]) => {
+                    {regions.map(([cityName, key], index) => {
                       return (
                         <li
                           key={key}
-                          onClick={() => setFilterCity(key)}
+                          onClick={() => changeFilter(index)}
                           className="text-[16px]"
                         >
                           {cityName}
@@ -83,34 +130,91 @@ export default function MainPage() {
                   가장 많은 관심을 받은 축제예요!
                 </div>
               </div>
-              <img
-                className="w-full h-full object-contain"
-                src="https://picsum.photos/200/200"
-              />
+              {popularPoster ? (
+                <img
+                  className="w-full h-full object-contain"
+                  src={`${IMG_PREFIX}/${popularPoster.posterImageUrl}`}
+                />
+              ) : (
+                <div className="w-full h-full object-contain" />
+              )}
             </div>
           </div>
-          <div className="flex flex-col gap-6">
-            <div>
-              <div className="text-xl font-bold">
-                이번에 선정된 축제 포스터에요
+          {filterSelected ? (
+            <div className="flex">
+              <MainPageCarousel
+                opts={{
+                  slidesToScroll: "auto",
+                  dragFree: true,
+                }}
+              >
+                {festivalList &&
+                  festivalList.slice(0, 6).map((info) => (
+                    <MainPageCarousel.Item key={info.festivalId}>
+                      <MainPageCarousel.ItemCover
+                        src={`${IMG_PREFIX}/${info.imageUrl}`}
+                      />
+                      <MainPageCarousel.Title className="w-30 truncate font-semibold">
+                        {info.festivalName}
+                      </MainPageCarousel.Title>
+                    </MainPageCarousel.Item>
+                  ))}
+              </MainPageCarousel>
+            </div>
+          ) : (
+            <>
+              <div className="flex flex-col gap-6">
+                <div>
+                  <div className="text-xl font-bold">
+                    이번에 선정된 축제 포스터에요
+                  </div>
+                </div>
+                <MainPageCarousel
+                  opts={{
+                    slidesToScroll: "auto",
+                    dragFree: true,
+                  }}
+                >
+                  {festivalList &&
+                    festivalList.slice(0, 6).map((info) => (
+                      <MainPageCarousel.Item key={info.festivalId}>
+                        <MainPageCarousel.ItemCover
+                          src={`${IMG_PREFIX}/${info.imageUrl}`}
+                        />
+                        <MainPageCarousel.Title className="w-30  font-semibold truncate">
+                          {info.festivalName}
+                        </MainPageCarousel.Title>
+                      </MainPageCarousel.Item>
+                    ))}
+                </MainPageCarousel>
               </div>
-            </div>
-            <MainPageCarousel
-              opts={{
-                slidesToScroll: "auto",
-                dragFree: true,
-              }}
-            >
-              {posterArr1.map((_, index) => (
-                <MainPageCarousel.Item key={index}>
-                  <MainPageCarousel.ItemCover src="https://picsum.photos/120/140" />
-                  <MainPageCarousel.Title className="font-semibold">
-                    임시 제목
-                  </MainPageCarousel.Title>
-                </MainPageCarousel.Item>
-              ))}
-            </MainPageCarousel>
-          </div>
+              <div className="flex flex-col gap-6">
+                <div>
+                  <div className="text-xl font-bold">
+                    요즘 인기있는 축제들이에요!
+                  </div>
+                </div>
+                <MainPageCarousel
+                  opts={{
+                    slidesToScroll: "auto",
+                    dragFree: true,
+                  }}
+                >
+                  {festivalList &&
+                    festivalList.slice(6).map((info) => (
+                      <MainPageCarousel.Item key={info.festivalId}>
+                        <MainPageCarousel.ItemCover
+                          src={`${IMG_PREFIX}/${info.imageUrl}`}
+                        />
+                        <MainPageCarousel.Title className="w-30 truncate">
+                          {info.festivalName}
+                        </MainPageCarousel.Title>
+                      </MainPageCarousel.Item>
+                    ))}
+                </MainPageCarousel>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </Drawer>
