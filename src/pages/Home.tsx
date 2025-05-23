@@ -11,6 +11,7 @@ import {
   DrawerTrigger,
 } from "@/components/drawer";
 import { customFetch } from "@/utils/customFetch";
+import { Link } from "react-router-dom";
 
 const IMG_PREFIX = "https://fb2f-1-215-227-114.ngrok-free.app/images";
 
@@ -150,14 +151,16 @@ export default function MainPage() {
               >
                 {festivalList &&
                   festivalList.slice(0, 6).map((info) => (
-                    <MainPageCarousel.Item key={info.festivalId}>
-                      <MainPageCarousel.ItemCover
-                        src={`${IMG_PREFIX}/${info.imageUrl}`}
-                      />
-                      <MainPageCarousel.Title className="w-30 truncate font-semibold">
-                        {info.festivalName}
-                      </MainPageCarousel.Title>
-                    </MainPageCarousel.Item>
+                    <Link to={`detail/${info.festivalId}`}>
+                      <MainPageCarousel.Item key={info.festivalId}>
+                        <MainPageCarousel.ItemCover
+                          src={`${IMG_PREFIX}/${info.imageUrl}`}
+                        />
+                        <MainPageCarousel.Title className="w-30 truncate font-semibold">
+                          {info.festivalName}
+                        </MainPageCarousel.Title>
+                      </MainPageCarousel.Item>
+                    </Link>
                   ))}
               </MainPageCarousel>
             </div>
@@ -177,14 +180,16 @@ export default function MainPage() {
                 >
                   {festivalList &&
                     festivalList.slice(0, 6).map((info) => (
-                      <MainPageCarousel.Item key={info.festivalId}>
-                        <MainPageCarousel.ItemCover
-                          src={`${IMG_PREFIX}/${info.imageUrl}`}
-                        />
-                        <MainPageCarousel.Title className="w-30  font-semibold truncate">
-                          {info.festivalName}
-                        </MainPageCarousel.Title>
-                      </MainPageCarousel.Item>
+                      <Link to={`detail/${info.festivalId}`}>
+                        <MainPageCarousel.Item key={info.festivalId}>
+                          <MainPageCarousel.ItemCover
+                            src={`${IMG_PREFIX}/${info.imageUrl}`}
+                          />
+                          <MainPageCarousel.Title className="w-30  font-semibold truncate">
+                            {info.festivalName}
+                          </MainPageCarousel.Title>
+                        </MainPageCarousel.Item>
+                      </Link>
                     ))}
                 </MainPageCarousel>
               </div>
@@ -202,14 +207,16 @@ export default function MainPage() {
                 >
                   {festivalList &&
                     festivalList.slice(6).map((info) => (
-                      <MainPageCarousel.Item key={info.festivalId}>
-                        <MainPageCarousel.ItemCover
-                          src={`${IMG_PREFIX}/${info.imageUrl}`}
-                        />
-                        <MainPageCarousel.Title className="w-30 truncate">
-                          {info.festivalName}
-                        </MainPageCarousel.Title>
-                      </MainPageCarousel.Item>
+                      <Link to={`detail/${info.festivalId}`}>
+                        <MainPageCarousel.Item key={info.festivalId}>
+                          <MainPageCarousel.ItemCover
+                            src={`${IMG_PREFIX}/${info.imageUrl}`}
+                          />
+                          <MainPageCarousel.Title className="w-30 truncate">
+                            {info.festivalName}
+                          </MainPageCarousel.Title>
+                        </MainPageCarousel.Item>
+                      </Link>
                     ))}
                 </MainPageCarousel>
               </div>
