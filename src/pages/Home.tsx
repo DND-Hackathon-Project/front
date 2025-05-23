@@ -14,23 +14,23 @@ import {
 const posterArr1 = Array(6).fill(1);
 
 const regions = [
-  "서울",
-  "부산",
-  "대구",
-  "인천",
-  "광주",
-  "대전",
-  "울산",
-  "세종",
-  "경기",
-  "강원",
-  "충북",
-  "충남",
-  "전북",
-  "전남",
-  "경북",
-  "경남",
-  "제주",
+  ["서울", "서울"],
+  ["부산", "부산"],
+  ["대구", "대구"],
+  ["인천", "인천"],
+  ["광주", "광주"],
+  ["대전", "대전"],
+  ["울산", "울산"],
+  ["세종", "세종"],
+  ["경기", "경기"],
+  ["강원", "강원"],
+  ["충북", "충북"],
+  ["충남", "충남"],
+  ["전북", "전북"],
+  ["전남", "전남"],
+  ["경북", "경북"],
+  ["경남", "경남"],
+  ["제주", "제주"],
 ];
 
 export default function MainPage() {
@@ -52,21 +52,21 @@ export default function MainPage() {
                     축제 지역 선택
                   </DrawerTitle>
                 </DrawerHeader>
-                <ul className="flex flex-col gap-1 pl-[34px] w-[100px] h-[320px] overflow-y-scroll">
-                  {regions.map((cityName) => {
-                    return (
-                      <DrawerClose>
+                <DrawerClose>
+                  <ul className="flex flex-col gap-1 pl-[34px] w-[100px] h-[320px] overflow-y-scroll">
+                    {regions.map(([cityName, key]) => {
+                      return (
                         <li
-                          key={cityName}
-                          onClick={() => setFilterCity(cityName)}
+                          key={key}
+                          onClick={() => setFilterCity(key)}
                           className="text-[16px]"
                         >
                           {cityName}
                         </li>
-                      </DrawerClose>
-                    );
-                  })}
-                </ul>
+                      );
+                    })}
+                  </ul>
+                </DrawerClose>
               </div>
             </DrawerContent>
           </div>
