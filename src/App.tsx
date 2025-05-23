@@ -11,7 +11,7 @@ function App() {
         <Route path="/" element={<Home />} />
 
         {/* 상세 페이지 */}
-        <Route path="/about" element={<Detail />} />
+        <Route path="/detail" element={<Detail />} />
 
         {/* 404 페이지
         <Route path="*" element={<NotFound />} /> */}
