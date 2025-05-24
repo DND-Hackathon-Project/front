@@ -6,11 +6,19 @@ import LoadingSpinner from "@/assets/LoadingSpinner.svg?react";
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  fileData: File | null;
+  setFileData: (value: File | null) => void;
+  onSubmit: () => void;
 }
 
-const Modal = ({ isOpen, onClose }: ModalProps) => {
+const Modal = ({
+  isOpen,
+  onClose,
+  fileData,
+  setFileData,
+  onSubmit,
+}: ModalProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [fileData, setFileData] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   // ESC 키로 모달 닫기
   useEffect(() => {
@@ -44,7 +52,7 @@ const Modal = ({ isOpen, onClose }: ModalProps) => {
   };
 
   const handleSubmit = () => {
-    setFileData(null);
+    onSubmit();
     onClose();
   };
 
