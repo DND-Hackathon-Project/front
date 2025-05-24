@@ -13,8 +13,8 @@ function App() {
         <Route path="/" element={<Home />} />
 
         {/* 상세 페이지 */}
-        <Route path="/vote" element={<VoteAndJoin />} />
-        <Route path="/detail:id" element={<Detail />} />
+        <Route path="/vote/:id" element={<VoteAndJoin />} />
+        <Route path="/detail/:id" element={<Detail />} />
         <Route path="/voteResult" element={<VoteResult />} />
 
         {/* 404 페이지

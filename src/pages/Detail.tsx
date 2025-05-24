@@ -1,26 +1,46 @@
+import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import FlexBox from "@/components/FlexBox";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/avatar";
 import Arrow from "@/assets/ArrowLeft.svg?react";
 import Confetti from "@/assets/Confetti.svg?react";
 import ThumbsUp from "@/assets/ThumbsUp.svg?react";
 import ExpandableText from "@/components/ExpandableText";
-
-interface DetailProps {
-  image: string;
-}
+import { fetchDetail } from "@/api/fetchDetail";
+import type { PosterDetail } from "./VoteAndJoin";
 
 const Detail = () => {
+  const location = useLocation();
+  const state = location.state as {
+    festivalId: number;
+    imageUrl: string;
+    voteCount: number;
+    memberId: number;
+    memberNickname: string;
+  };
+  const [detailedData, setDetailedData] = useState<PosterDetail | null>(null);
+
+  useEffect(() => {
+    const fetcher = async () => {
+      const res = await fetchDetail(state.festivalId);
+      setDetailedData(res);
+    };
+    fetcher();
+  }, []);
+
   return (
     <div className="relative max-w-md mx-auto border border-1 h-screen overflow-hidden">
       {/* 배경 이미지 레이어 */}
-      <div
-        className="absolute inset-0 bg-cover bg-center saturate-50 brightness-75"
-        style={{
-          backgroundImage: `url(https://cdn.eachj.co.kr/news/photo/202205/6138_10647_2355.png)`,
-          backgroundSize: "cover",
-          zIndex: 0,
-        }}
-      />
+      {state.imageUrl && (
+        <div
+          className="absolute inset-0 bg-cover bg-center saturate-50 brightness-75"
+          style={{
+            backgroundImage: `url(https://fb2f-1-215-227-114.ngrok-free.app/images/${state.imageUrl}})`,
+            backgroundSize: "cover",
+            zIndex: 0,
+          }}
+        />
+      )}
 
       {/* 내용 레이어 */}
       <div className="relative z-10 text-white h-full flex flex-col">
@@ -33,10 +53,10 @@ const Detail = () => {
               <AvatarImage src="https://github.com/shadcn.png" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-            <p>올린 사람 (닉네임)</p>
+            <p> (닉네임)</p>
           </FlexBox>
           <FlexBox className="gap-2">
-            <ThumbsUp onClick={() => {}} /> 31개
+            <ThumbsUp onClick={() => {}} /> {state.voteCount}
           </FlexBox>
         </FlexBox>
 
@@ -48,12 +68,8 @@ const Detail = () => {
 
           <FlexBox direction="col" className="pb-12 px-4 items-start">
             <FlexBox direction="col" className="text-white gap-4 items-start">
-              <h2 className="font-semibold text-xl">지역 축제명</h2>
-              <ExpandableText
-                text={
-                  "지역 축제에 대한 설명 부분입니다. (어떠한 축제이고, 포스터 제작기준은 어떻게 되는지 자세하게 쓰여 있습니다. 예를 들어 포스터는 A3 사이즈 이상, 해상도는 300dpi 이상이어야 하고, 사용된 폰트는 저작권에 문제가 없어야 합니다. 또한 축제의 대표 콘텐츠와 장소, 일정을 반드시 포함해야 합니다."
-                }
-              />
+              <h2 className="font-semibold text-xl">{detailedData?.name}</h2>
+              <ExpandableText text={detailedData?.description} />
             </FlexBox>
             <FlexBox className="w-full justify-around mt-8 gap-4">
               <button className="flex-1 bg-blue-500 px-5 py-3 rounded-lg cursor-pointer">

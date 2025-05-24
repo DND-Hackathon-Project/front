@@ -85,7 +85,7 @@ export default function MainPage() {
 
   return (
     <Drawer>
-      <div className="flex flex-col gap-4 max-w-md pt-12 overflow-visible">
+      <div className="flex flex-col gap-4 max-w-md mx-auto pt-12 overflow-visible">
         <div className="pl-3">
           <div className="w-full">
             <DrawerTrigger>
@@ -132,7 +132,7 @@ export default function MainPage() {
                 </div>
               </div>
               {popularPoster ? (
-                <Link to={`/details/${popularPoster.festivalId}`}>
+                <Link to={`/detail/${popularPoster.festivalId}`}>
                   <img
                     className="w-full h-full object-contain"
                     src={`${IMG_PREFIX}/${popularPoster.posterImageUrl}`}
@@ -153,7 +153,17 @@ export default function MainPage() {
               >
                 {festivalList &&
                   festivalList.slice(0, 6).map((info) => (
-                    <Link to={`detail/${info.festivalId}`}>
+                    <Link
+                      to={`detail/${info.festivalId}`}
+                      state={{
+                        festivalId: info.festivalId,
+                        posterId: info.posterId,
+                        imageUrl: info.imageUrl,
+                        voteCount: info.voteCount,
+                        memberId: info.memberId,
+                        memberNickname: info.memberNickname,
+                      }}
+                    >
                       <MainPageCarousel.Item key={info.festivalId}>
                         <MainPageCarousel.ItemCover
                           src={`${IMG_PREFIX}/${info.imageUrl}`}
@@ -181,9 +191,9 @@ export default function MainPage() {
                   }}
                 >
                   {festivalList &&
-                    festivalList.slice(0, 6).map((info) => (
+                    festivalList.slice(0, 6).map((info, idx) => (
                       <Link to={`detail/${info.festivalId}`}>
-                        <MainPageCarousel.Item key={info.festivalId}>
+                        <MainPageCarousel.Item key={info.festivalId + idx}>
                           <MainPageCarousel.ItemCover
                             src={`${IMG_PREFIX}/${info.imageUrl}`}
                           />
@@ -209,7 +219,7 @@ export default function MainPage() {
                 >
                   {festivalList &&
                     festivalList.slice(6).map((info) => (
-                      <Link to={`detail/${info.festivalId}`}>
+                      <Link to={`vote/${info.festivalId}`}>
                         <MainPageCarousel.Item key={info.festivalId}>
                           <MainPageCarousel.ItemCover
                             src={`${IMG_PREFIX}/${info.imageUrl}`}

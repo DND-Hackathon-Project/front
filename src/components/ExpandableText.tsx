@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 interface ExpandableTextProps {
-  text: string;
+  text: string | undefined;
   maxLines?: number;
 }
 
